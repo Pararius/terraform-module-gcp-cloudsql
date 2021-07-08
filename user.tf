@@ -42,3 +42,19 @@ resource "postgresql_default_privileges" "readonly_privileges" {
   object_type = "table"
   privileges  = ["SELECT"]
 }
+
+resource "postgresql_grant" "readonly_grants" {
+  for_each = merge(
+    [
+      for key, user in local.postgres_users : {
+        for db in var.databases : "${db}/${key}" => user if user.readonly == true
+      }
+    ]...
+  )
+
+  database    = google_sql_database.pararius_office.name
+  role        = postgresql_role.readonly_roles[each.value].name
+  schema      = "public"
+  object_type = "table"
+  privileges  = []
+}
