@@ -74,7 +74,7 @@ variable "tier" {
 variable "users" {
   type = list(object({
     name     = string
-    host     = string
+    host     = optional(string)
     readonly = optional(bool)
   }))
 }
