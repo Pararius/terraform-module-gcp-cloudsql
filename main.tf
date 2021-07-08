@@ -6,6 +6,10 @@ terraform {
       source  = "hashicorp/google"
       version = ">= 3.70.0"
     }
+    postgresql = {
+      source  = "cyrilgdn/postgresql"
+      version = ">= 1.11.0"
+    }
   }
   experiments = [module_variable_optional_attrs]
 }
