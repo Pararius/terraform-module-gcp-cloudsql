@@ -17,44 +17,9 @@ resource "google_sql_user" "mysql_user" {
 }
 
 resource "google_sql_user" "postgres_user" {
-  for_each = { for key, user in local.postgres_users : key => user if user.readonly != true }
+  for_each = local.postgres_users
 
   instance = google_sql_database_instance.instance.name
   name     = each.value.name
   password = random_password.sql_user[each.key].result
-}
-
-resource "postgresql_role" "readonly_roles" {
-  for_each = { for key, user in local.postgres_users : key => user if user.readonly == true }
-
-  login    = true
-  name     = each.value.name
-  password = random_password.sql_user[each.key].result
-}
-
-resource "postgresql_default_privileges" "readonly_privileges" {
-  for_each = { for key, user in local.postgres_users : key => user if user.readonly == true }
-
-  instance    = google_sql_database_instance.instance.name
-  role        = postgresql_role.readonly_roles[each.key].name
-  owner       = "postgres"
-  schema      = "public"
-  object_type = "table"
-  privileges  = ["SELECT"]
-}
-
-resource "postgresql_grant" "readonly_grants" {
-  for_each = merge(
-    [
-      for key, user in local.postgres_users : {
-        for db in var.databases : "${db}/${key}" => user if user.readonly == true
-      }
-    ]...
-  )
-
-  database    = google_sql_database.pararius_office.name
-  role        = postgresql_role.readonly_roles[each.value].name
-  schema      = "public"
-  object_type = "table"
-  privileges  = []
 }

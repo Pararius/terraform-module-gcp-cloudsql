@@ -75,6 +75,5 @@ variable "users" {
   type = list(object({
     name     = string
     host     = optional(string)
-    readonly = optional(bool)
   }))
 }
