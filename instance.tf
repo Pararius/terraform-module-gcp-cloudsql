@@ -27,6 +27,16 @@ resource "google_sql_database_instance" "instance" {
     ip_configuration {
       ipv4_enabled = true
       require_ssl  = true
+
+      dynamic "authorized_networks" {
+        for_each = var.authorized_networks
+        iterator = network
+
+        content {
+          name  = network.key
+          value = network.value
+        }
+      }
     }
     dynamic "maintenance_window" {
       for_each = var.primary_instance_name == null ? [0] : []

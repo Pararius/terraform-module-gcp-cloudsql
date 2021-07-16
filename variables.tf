@@ -1,3 +1,8 @@
+variable "authorized_networks" {
+  type = map(string)
+  default = {}
+}
+
 variable "backup_config" {
   type = object({
     binary_log_enabled = optional(bool)
