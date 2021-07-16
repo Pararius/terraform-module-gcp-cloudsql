@@ -1,6 +1,9 @@
 variable "authorized_networks" {
-  type = map(string)
-  default = {}
+  type = list(object({
+    name    = string
+    network = string
+  }))
+  default = []
 }
 
 variable "backup_config" {

@@ -33,8 +33,8 @@ resource "google_sql_database_instance" "instance" {
         iterator = network
 
         content {
-          name  = network.key
-          value = network.value
+          name  = network.value.name
+          value = network.value.network
         }
       }
     }
