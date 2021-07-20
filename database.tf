@@ -5,4 +5,10 @@ resource "google_sql_database" "database" {
   name      = each.value
   charset   = "utf8"
   collation = "utf8_general_ci"
+
+  lifecycle {
+    ignore_changes = [
+      "collation",
+    ]
+  }
 }
