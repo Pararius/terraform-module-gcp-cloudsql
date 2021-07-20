@@ -79,12 +79,18 @@ variable "tier" {
   default = null
 }
 
+variable "admins" {
+  type = list(object({
+    name     = string
+    host     = optional(string)
+  }))
+}
+
 variable "users" {
   type = list(object({
     name     = string
     host     = optional(string)
 
-    admin = bool
     db_ro = optional(list(string))
     db_rw = optional(list(string))
   }))
