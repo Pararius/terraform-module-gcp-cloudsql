@@ -22,5 +22,22 @@ locals {
     # default host in the resulting user object as well
     for user in var.users : "${user.name}@${user.host == null ? "%" : user.host}" => defaults(user, { host = "%" })
   }
-  postgres_users = local.db_engine != "POSTGRES" ? {} : { for user in var.users : user.name => user }
+  postgres_admins  = local.db_engine != "POSTGRES" ? {} : { for user in var.users : user.name => user if user.admin}
+  postgres_users = local.db_engine != "POSTGRES" ? {} : { for user in var.users : user.name => defaults(user, { db_ro = "", db_rw = ""}) if user.admin == false}
+  postgres_db_readers = local.db_engine != "POSTGRES" ? [] : flatten([
+    for user in local.postgres_users : [
+      for db in user.db_ro : {
+        user = user.name
+        db   = db
+      }
+    ]
+  ])
+  postgres_db_writers = local.db_engine != "POSTGRES" ? [] : flatten([
+    for user in local.postgres_users : [
+      for db in user.db_rw : {
+        user = user.name
+        db   = db
+      }
+    ]
+  ])
 }
