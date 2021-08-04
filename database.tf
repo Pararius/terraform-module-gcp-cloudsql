@@ -3,6 +3,4 @@ resource "google_sql_database" "database" {
 
   instance  = google_sql_database_instance.instance.name
   name      = each.value
-  charset   = "utf8"
-  collation = "utf8_general_ci"
 }
