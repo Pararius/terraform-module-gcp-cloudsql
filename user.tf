@@ -58,8 +58,12 @@ resource "postgresql_grant" "postgres_writers" {
   schema      = "public"
   object_type = "table"
   privileges = [
-    "SELECT",
+    "DELETE",
     "INSERT",
+    "REFERENCES",
+    "SELECT",
+    "TRIGGER",
+    "TRUNCATE",
     "UPDATE",
   ]
 }
