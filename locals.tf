@@ -20,7 +20,7 @@ locals {
     # For every user, create a distict key in the format [user]@[host]
     # If the host parameter was omitted, use '%' as default and set the
     # default host in the resulting user object as well
-    for user in var.users : "${user.name}@${user.host == null ? "%" : user.host}" => defaults(user, { host = "%" })
+    for user in concat(var.users, [{ name = "root", host = "%" }]) : "${user.name}@${user.host == null ? "%" : user.host}" => defaults(user, { host = "%" })
   }
-  postgres_users = local.db_engine != "POSTGRES" ? {} : { for user in var.users : user.name => user }
+  postgres_users = local.db_engine != "POSTGRES" ? {} : { for user in concat(var.users, [{ name = "postgres" }]) : user.name => user }
 }
