@@ -10,7 +10,7 @@ variable "backup_config" {
   type = object({
     binary_log_enabled = optional(bool)
     enabled            = optional(bool)
-    location           = optional(string)
+    location           = optional(string, "eu")
   })
   default = {
   }
@@ -81,7 +81,7 @@ variable "tier" {
 
 variable "users" {
   type = list(object({
-    name     = string
-    host     = optional(string)
+    name = string
+    host = optional(string)
   }))
 }
