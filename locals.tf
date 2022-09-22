@@ -1,9 +1,4 @@
 locals {
-  default_backup_config = {
-    binary_log_enabled = var.highly_available == true ? true : false
-    enabled            = var.highly_available == true ? true : false
-    location           = "eu"
-  }
   default_labels = {
     env = var.environment
   }
@@ -11,10 +6,14 @@ locals {
 
   db_engine = split("_", var.database_version)[0]
 
-  backup_config = defaults(var.backup_config, local.default_backup_config)
-  labels        = merge(local.default_labels, var.labels)
-  storage_size  = var.storage_autoresize == true ? null : var.storage_size
-  tier          = var.tier != null ? var.tier : local.default_tier
+  backup_config = {
+    binary_log_enabled = coalesce(var.backup_config.binary_log_enabled, var.highly_available)
+    enabled            = coalesce(var.backup_config.enabled, var.highly_available)
+    location           = var.backup_config.location
+  }
+  labels       = merge(local.default_labels, var.labels)
+  storage_size = var.storage_autoresize == true ? null : var.storage_size
+  tier         = coalesce(var.tier, local.default_tier)
 
   mysql_users = local.db_engine != "MYSQL" ? {} : {
     # For every user, create a distict key in the format [user]@[host]
