@@ -13,8 +13,8 @@ resource "google_sql_database_instance" "instance" {
     user_labels           = local.labels
     backup_configuration {
       binary_log_enabled = local.backup_config.binary_log_enabled
-      enabled            = coalesce(var.backup_config.enabled, var.highly_available)
-      location           = coalesce(var.backup_config.enabled, var.highly_available) ? local.backup_config.location : null
+      enabled            = local.backup_config.enabled
+      location           = local.backup_config.location
     }
     dynamic "database_flags" {
       for_each = var.flags

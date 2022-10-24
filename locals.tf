@@ -9,7 +9,7 @@ locals {
   backup_config = {
     binary_log_enabled = coalesce(var.backup_config.binary_log_enabled, var.highly_available)
     enabled            = coalesce(var.backup_config.enabled, var.highly_available)
-    location           = var.backup_config.location
+    location           = coalesce(var.backup_config.enabled, var.highly_available) ? var.backup_config.location : null
   }
   labels       = merge(local.default_labels, var.labels)
   storage_size = var.storage_autoresize == true ? null : var.storage_size
