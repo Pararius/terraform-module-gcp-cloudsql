@@ -2,7 +2,7 @@ resource "google_sql_database_instance" "instance" {
   database_version     = var.database_version
   name                 = "${var.project_prefix}-${var.instance_name}"
   deletion_protection  = var.deletion_protection
-  master_instance_name = "${var.primary_instance_name != null ? var.project_prefix : null}-${var.primary_instance_name}"
+  master_instance_name = "${var.primary_instance_name}" != null ? "${var.project_prefix}-${var.primary_instance_name}" : null
   settings {
     availability_type     = var.highly_available == true ? "REGIONAL" : "ZONAL"
     disk_autoresize       = var.storage_autoresize
