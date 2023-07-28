@@ -87,6 +87,6 @@ variable "users" {
 }
 
 variable "project_prefix" {
-  type = string
+  type    = string
   default = null
 }
