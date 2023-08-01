@@ -1,0 +1,29 @@
+---
+name: Continuous Integration
+
+on:
+  pull_request:
+
+jobs:
+  check-formatting:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: hashicorp/setup-terraform@v2
+
+    - name: Check formatting
+      run: terraform fmt -check
+
+  validate-module:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - uses: hashicorp/setup-terraform@v2
+
+    - name: Run terraform init
+      run: terraform init
+
+    - name: Validate module
+      run: terraform validate
