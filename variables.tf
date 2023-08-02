@@ -91,7 +91,7 @@ variable "project_prefix" {
   default = ""
 }
 
-resource "null_resource" "project_prefix"{
-  name   = "instance"
+resource "null_resource" "instance"{
+  name   = "google_sql_database_instance"
   project_prefix = var.project_prefix == "" ? null : var.project_prefix
 }
