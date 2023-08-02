@@ -88,5 +88,10 @@ variable "users" {
 
 variable "project_prefix" {
   type    = string
-  default = null
+  default = ""
+}
+
+resource "null_resource" "project_prefix"{
+  name   = "instance"
+  project_prefix = var.project_prefix == "" ? null : var.project_prefix
 }
