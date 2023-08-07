@@ -45,5 +45,12 @@ resource "google_sql_database_instance" "instance" {
         hour = 4
       }
     }
+
+    dynamic "replica_configuration" {
+      for_each = var.primary_instance_name == null ? [] : [0]
+      content {
+        failover_target = false
+      }
+    }
   }
 }
