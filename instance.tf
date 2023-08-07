@@ -3,6 +3,14 @@ resource "google_sql_database_instance" "instance" {
   name                 = "${var.project_prefix != null ? "${var.project_prefix}-" : ""}${var.instance_name}"
   deletion_protection  = var.deletion_protection
   master_instance_name = var.primary_instance_name
+
+  dynamic "replica_configuration" {
+    for_each = var.primary_instance_name == null ? [] : [0]
+    content {
+      failover_target = false
+    }
+  }
+
   settings {
     availability_type     = var.highly_available == true ? "REGIONAL" : "ZONAL"
     disk_autoresize       = var.storage_autoresize
@@ -43,13 +51,6 @@ resource "google_sql_database_instance" "instance" {
       content {
         day  = 1
         hour = 4
-      }
-    }
-
-    dynamic "replica_configuration" {
-      for_each = var.primary_instance_name == null ? [] : [0]
-      content {
-        failover_target = false
       }
     }
   }
