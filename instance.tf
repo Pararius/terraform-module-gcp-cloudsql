@@ -55,4 +55,8 @@ resource "google_sql_database_instance" "instance" {
       }
     }
   }
+
+  lifecycle {
+    ignore_changes = [settings.edition]
+  }
 }
