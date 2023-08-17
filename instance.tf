@@ -17,6 +17,7 @@ resource "google_sql_database_instance" "instance" {
     disk_autoresize_limit = var.storage_limit
     disk_size             = local.storage_size
     disk_type             = "PD_SSD"
+    edition               = "ENTERPRISE"
     tier                  = local.tier
     user_labels           = local.labels
     backup_configuration {
