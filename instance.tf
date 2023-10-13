@@ -58,7 +58,7 @@ resource "google_sql_database_instance" "instance" {
 
   lifecycle {
     ignore_changes = [
-      settings["edition"], # Readonly field which tends to cause perma-diffs
+      settings[0].edition # Readonly field which tends to cause perma-diffs
     ]
   }
 }
